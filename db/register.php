@@ -6,8 +6,8 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
 
-//if (isset($_POST['mobileNo']) && isset($_POST['password']) && isset($_POST['college'])&&isset($_POST['name']) && isset($_POST['email'])) {
-{	$phone = $_POST['mobileNo'];
+if (isset($_POST['mobileNo']) && isset($_POST['password']) && isset($_POST['college'])&&isset($_POST['name']) && isset($_POST['email'])) {
+	$phone = $_POST['mobileNo'];
     $pass = $_POST['password'];                                 //unhashed password
     $collegename = $_POST['college'];
     $name = $_POST['name'];
