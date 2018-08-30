@@ -6,20 +6,21 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
 
-if (isset($_POST['mobileNo']) && isset($_POST['password']) && isset($_POST['college'])&&isset($_POST['name']) && isset($_POST['email'])) {
-	$phone = $_POST['mobileNo'];
-    $pass = $_POST['password'];                                 //unhashed password
-    $collegename = $_POST['college'];
-    $name = $_POST['name'];
+//if(isset($_POST['register']))
+if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['mobileNo']) && isset($_POST['college']))
+ {
+	$name = $_POST['name'];
     $email = $_POST['email'];
 	
-
+	$pass = $_POST['password']; 								//unhashed password
 	$password = password_hash($pass,PASSWORD_DEFAULT);		 	// encrypted password
-	 
-    // check if user is already existed with the same mobile
-    if ($db->isUserExisted($mobileNo)) {
+	$phone = $_POST['mobileNo'];
+	$collegename = $_POST['college'];
+ 
+    // check if user is already existed with the same email
+    if ($db->isUserExisted($email)) {
         $response["error"] = TRUE;
-        $response["error_msg"] = "Username already exists with " . $mobileNo;
+        $response["error_msg"] = "Username already exists with " . $email;
         echo json_encode($response);
     } else {
         // create a new user
@@ -27,12 +28,12 @@ if (isset($_POST['mobileNo']) && isset($_POST['password']) && isset($_POST['coll
         if ($user) {
             // user stored successfully
             $response["error"] = FALSE;
-            $response["user"] = $user["user"];
-            $response["user"]["mobileNo"] = $user["mobileNo"];
-            $response["user"]["password"] = $user["password"];
-            $response["user"]["collegeName"] = $user["college"];
+            //$response["uid"] = $user["id"];
             $response["user"]["name"] = $user["name"];
-            $response["user"]["email"] = $user["email"];           
+            $response["user"]["email"] = $user["email"];
+			$response["user"]["password"] = $user["password"];
+			$response["user"]["mobileNo"] = $user["mobileNo"];
+            $response["user"]["college"] = $user["college"];
 
             echo json_encode($response);
         } else {
@@ -44,7 +45,7 @@ if (isset($_POST['mobileNo']) && isset($_POST['password']) && isset($_POST['coll
     }
 } else {
     $response["error"] = TRUE;
-    $response["error_msg"] = "Required parameters (phonenumber, password,collegename ,name or email) is missing!";
+    $response["error_msg"] = "Required parameters (name, email, password, collegename or phonenumber) is missing!";
     echo json_encode($response);
 }
 ?>

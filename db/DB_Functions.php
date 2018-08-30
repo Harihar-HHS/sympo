@@ -18,19 +18,19 @@ class DB_Functions {
      * Storing new user
      * returns user details
      */
-    public function storeUser($name, $email, $phone, $collegename, $password, $unhashed_pass) {
-        $uuid = uniqid('', true);
+    public function storeUser($name, $email, $mobileNo, $collegename, $password, $unhashed_pass) {
 		$singleevent = 0;
- 
-        $stmt = $this->conn->prepare("INSERT INTO register(mobileNo, password,college,name,email) VALUES(?,?,?,?,?)");
-        $stmt->bind_param("sssss",$phone, $password,  $collegename,$name, $email );
+       
+        $stmt = $this->conn->prepare("INSERT INTO users VALUES(?,?,?,?,?)");
+        $stmt->bind_param("sssss", $mobileNo,$password,$collegename,$name,$email);
         $result = $stmt->execute();
         $stmt->close();
 		
-		$user = $this->getUserByMobileAndPassword($phone, $unhashed_pass);
-		$uid = $user['mobileNo'];
+		$user = $this->getUserBymobileNoAndPassword($mobileNo, $unhashed_pass);
+		//$uid = $user['mobileNo'];
+        $uid=$mobileNo;
 		
-		$stmt1 = $this->conn->prepare("INSERT INTO events(`mobileNo`, `GoodWillHunting`, `TheGameOfCodes`, `Predestination`, `TheDigitalFortress`, `TheSecretSociety`, `UnicornOfSilicon`, `FishBowlConversation`, `Inquizitive`, `MiniProject`, `PresentationFrankenstein`) VALUES(?,?,?,?,?,?,?,?,?,?,?");
+		$stmt1 = $this->conn->prepare("INSERT INTO events VALUES(?,?,?,?,?,?,?,?,?,?,?)");
         $stmt1->bind_param("siiiiiiiiii", $uid, $singleevent, $singleevent, $singleevent, $singleevent, $singleevent, $singleevent, $singleevent, $singleevent, $singleevent, $singleevent);
         $result1 = $stmt1->execute();
         $stmt1->close();
@@ -49,10 +49,10 @@ class DB_Functions {
         }
     }
 	
- 	public function getUserByMobileAndPassword($phone, $password) {
+ 	public function getUserBymobileNoAndPassword($mobileNo, $password) {
 		
 		$stmt = $this->conn->prepare("SELECT * FROM users WHERE mobileNo = ?");
-		$stmt->bind_param("s", $phone);
+		$stmt->bind_param("s", $mobileNo);
 		
         if ($stmt->execute()) {
             $user = $stmt->get_result()->fetch_assoc();
@@ -68,18 +68,18 @@ class DB_Functions {
                 return $user;
             }
         } else {
-            return json_encode("1");
+            return NULL;
         }
     }
 	
-	public function getUserEvents($phone) {
+	public function getUserEvents($mobileNo) {
 		
-		$user = $this->getUserByMobile($phone);
+		$user = $this->getUserBymobileNo($mobileNo);
 		$uid = $user['mobileNo'];
  
         $stmt = $this->conn->prepare("SELECT * FROM events WHERE mobileNo = ?");
  
-        $stmt->bind_param("i", $uid);
+        $stmt->bind_param("s", $uid);
  
         if ($stmt->execute()) {
             $eventslist = $stmt->get_result()->fetch_assoc();
@@ -88,17 +88,17 @@ class DB_Functions {
 			return $eventslist;
             }
 		else {
-            return json_encode("2");
+            return NULL;
         }
     }
  
     /**
      * Check user exists or not
      */
-    public function isUserExisted($phone) {
+    public function isUserExisted($mobileNo) {
         $stmt = $this->conn->prepare("SELECT mobileNo from users WHERE mobileNo = ?");
  
-        $stmt->bind_param("s", $phone);
+        $stmt->bind_param("s", $mobileNo);
  
         $stmt->execute();
  
@@ -113,25 +113,25 @@ class DB_Functions {
         }
     }
 		
-	 public function getUserByMobile($phone) {
+	 public function getUserBymobileNo($mobileNo) {
  
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE mobileNo = ?");
  
-        $stmt->bind_param("s", $phone);
+        $stmt->bind_param("s", $mobileNo);
  
         if ($stmt->execute()) {
             $user = $stmt->get_result()->fetch_assoc();
             $stmt->close();
 			
-			$mailId = $user['mobileNo'];
+			$phone = $user['mobileNo'];
 			
             // check for e-mail equality
-            if ($mailId == $phone) {
+            if ($phone == $mobileNo) {
                 // user authentication details are correct
                 return $user;
             }
         } else {
-            return json_encode("3");
+            return NULL;
         }
     }
  
