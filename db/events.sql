@@ -30,16 +30,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `events` (
   `mobileNo` varchar(10) NOT NULL,
-  `GoodWillHunting` tinyint(1) DEFAULT NULL,
-  `TheGameOfCodes` tinyint(1) DEFAULT NULL,
-  `Predestination` tinyint(1) DEFAULT NULL,
-  `TheDigitalFortress` tinyint(1) DEFAULT NULL,
-  `TheSecretSociety` tinyint(1) DEFAULT NULL,
-  `UnicornOfSilicon` tinyint(1) DEFAULT NULL,
-  `FishBowlConversation` tinyint(1) DEFAULT NULL,
-  `Inquizitive` tinyint(1) DEFAULT NULL,
-  `MiniProject` tinyint(1) DEFAULT NULL,
-  `PresentationFrankenstein` tinyint(1) DEFAULT NULL
+  `GoodWillHunting` int(1) DEFAULT NULL,
+  `TheGameOfCodes` int(1) DEFAULT NULL,
+  `Predestination` int(1) DEFAULT NULL,
+  `TheDigitalFortress` int(1) DEFAULT NULL,
+  `TheSecretSociety` int(1) DEFAULT NULL,
+  `UnicornOfSilicon` int(1) DEFAULT NULL,
+  `FishBowlConversation` int(1) DEFAULT NULL,
+  `Inquizitive` int(1) DEFAULT NULL,
+  `MiniProject` int(1) DEFAULT NULL,
+  `PresentationFrankenstein` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
