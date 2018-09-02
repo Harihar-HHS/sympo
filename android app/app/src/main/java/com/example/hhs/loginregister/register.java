@@ -90,10 +90,10 @@ public class register extends AppCompatActivity {
 
 
     public void signup() {
-        if (!validate()) {
+        /*if (!validate()) {
             onSignupFailed();
             return;
-        }
+        }*/
 
 
         name1 = nameText.getText().toString().trim();
@@ -120,13 +120,20 @@ public class register extends AppCompatActivity {
 
     private void registerUser(final String name1, final String email1,
                               final String password1, final String mobile1, final String collegeName) {
-        String tag_string_req = "register";
+
+        Log.d(TAG, "onclick Response: " + name1+email1+password1+mobile1+collegeName);
 
         progressDialog.setMessage("Creating Account ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                "http://172.31.99.160/interrupt/db/register.php",
+                //"http://localhost/interrupt/18/register.php",
+                //"http://192.168.13.217/interrupt/app_connect/register.php",
+                //"http://192.168.43.53/interrupt/app_connect/register.php",         // correct
+                 "http://192.168.0.3/interrupt/app_connect/register.php",
+                //"http://localhost/interrupt/app_connect/register.php",
+                //"https://keontaesemisi.000webhostapp.com/reg.php",
+                //"http://172.31.99.160/interrupt/db/register.php",
                 //"http://localhost/interrupt/app_db/register.php",
                 new Response.Listener<String>() {
 
@@ -182,7 +189,7 @@ public class register extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("mobileNO", mobile1);
+                params.put("mobileNo", mobile1);
                 params.put("password", password1);
                 params.put("college", collegeName);
                 params.put("name", name1);
@@ -193,7 +200,7 @@ public class register extends AppCompatActivity {
 
         };
 
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().addToRequestQueue(strReq);
     }
 
     private void showDialog() {
