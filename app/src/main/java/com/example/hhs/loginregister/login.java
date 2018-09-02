@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,19 @@ public class login extends AppCompatActivity {
         uid=findViewById(R.id.uid);
         lgin_pswd=findViewById(R.id.login_pswd);
         lgin=findViewById(R.id.login_btn);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+
+        /*try {
+            if (!isConnected()) {
+                Toast.makeText(register.this, "Please connect to the Internet.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (InterruptedException f) {
+
+        } catch (IOException e) {
+
+        }*/
 
         lgin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,11 +78,14 @@ public class login extends AppCompatActivity {
             progressDialog.setMessage("Signing in ...");
             showDialog();
 
+            Log.d(TAG,"login vals : "+uid_mobile+login_pswd);
+
             StringRequest strReq = new StringRequest(Request.Method.POST,
                     //"http://localhost/interrupt/18/register.php",
-                    "http://192.168.13.217/interrupt/app_connect/login.php",
-                    // "http://192.168.0.4/interrupt/app_connect/register.php",
-                    //"http://localhost/interrupt/app_connect/register.php",
+                    //"http://192.168.13.217/interrupt/app_connect/login.php",
+                    // "http://192.168.43.53/interrupt/app_connect/login.php",         // correct
+                     "http://192.168.0.3/interrupt/app_connect/login.php",
+                    //"http://localhost/interrupt/app_connect/login.php",
                     //"https://keontaesemisi.000webhostapp.com/reg.php",
                     //"http://172.31.99.160/interrupt/db/register.php",
                     //"http://localhost/interrupt/app_db/register.php",
@@ -88,6 +105,11 @@ public class login extends AppCompatActivity {
                                     JSONObject user = jObj.getJSONObject("user");
                                     String mobile = user.getString("mobileNo");
                                     String password = user.getString("password");
+                                    String collegeName = user.getString("college");
+                                    String name1 = user.getString("name");
+                                    String email = user.getString("email");
+
+                                    Log.d(TAG,"login successful");
 
                                     Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
 
@@ -137,5 +159,63 @@ public class login extends AppCompatActivity {
     private void hideDialog() {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        /*String name1 = nameText.getText().toString();
+        String email = emailText.getText().toString();
+        String mobile = mobNumText.getText().toString();
+        String password = passText.getText().toString();
+        //String reEnterPassword = rePasText.getText().toString();
+
+
+        if (name1.isEmpty() || name1.length() < 3) {
+            nameText.setError("at least 3 characters");
+            valid = false;
+        } else {
+            nameText.setError(null);
+        }
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailText.setError("enter a valid email address");
+            valid = false;
+        } else {
+            emailText.setError(null);
+        }
+
+        if (mobile.isEmpty() || mobile.length() != 10) {
+            mobNumText.setError("Enter Valid Mobile Number");
+            valid = false;
+        } else {
+            mobNumText.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+            passText.setError("between 4 and 10 alphanumeric characters");
+            valid = false;
+        } else {
+            passText.setError(null);
+        }
+
+        /*if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
+            rePasText.setError("Password Do not match");
+            valid = false;
+        } else {
+            rePasText.setError(null);
+        }
+*/
+        return valid;
+    }
+
+    /*public void onSignupFailed() {
+        Toast.makeText(getBaseContext(), "Signup failed", Toast.LENGTH_LONG).show();
+        createAccount.setEnabled(true);
+    }*/
+
+    public boolean isConnected() throws InterruptedException, IOException {
+        String command = "ping -c 1 google.com";
+        return (Runtime.getRuntime().exec(command).waitFor() == 0);
     }
 }

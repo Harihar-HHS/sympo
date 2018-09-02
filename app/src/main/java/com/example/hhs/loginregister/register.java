@@ -128,8 +128,9 @@ public class register extends AppCompatActivity {
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 //"http://localhost/interrupt/18/register.php",
-                "http://192.168.13.217/interrupt/app_connect/register.php",
-                // "http://192.168.0.4/interrupt/app_connect/register.php",
+                //"http://192.168.13.217/interrupt/app_connect/register.php",
+                //"http://192.168.43.53/interrupt/app_connect/register.php",         // correct
+                 "http://192.168.0.3/interrupt/app_connect/register.php",
                 //"http://localhost/interrupt/app_connect/register.php",
                 //"https://keontaesemisi.000webhostapp.com/reg.php",
                 //"http://172.31.99.160/interrupt/db/register.php",
