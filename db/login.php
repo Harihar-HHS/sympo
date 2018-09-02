@@ -5,23 +5,24 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
  
- //$_POST["email"] = "ganeshjayaram7915@gmail.com";
- //$_POST["password"] = "ganesh";
+ $_POST["mobileNo"] = "9876543210";
+ $_POST["password"] = "dfijnviw";
  
 if (isset($_POST['mobileNo']) && isset($_POST['password'])) {
  
-    $email = $_POST['mobileNo'];
+    $mobileNo = $_POST['mobileNo'];
     $password = $_POST['password'];
  
     // get the user by email and password
-    $user = $db->getUserBymobileNoAndPassword($email, $password);
-    if ($user != false) {
+    $user = $db->getUserBymobileNoAndPassword($mobileNo, $password);
+    //echo $user;
+    if ($user) {
         // user is found
         $response["error"] = FALSE;
 		
 		//$eventslist = $db->getUserEvents($email);
 		//if($eventslist != false){
-		        //$response["eid"] = $eventslist["id"];
+		        //$response["eid"] = $eventslist["id"];												// tried my events as per last year events.
 				/*$response["eventslist"]["Battle Code"] = $eventslist["e1"];
 				$response["eventslist"]["Flip a Table!"] = $eventslist["e2"];
 				$response["eventslist"]["First Strike"] = $eventslist["e3"];
@@ -45,13 +46,15 @@ if (isset($_POST['mobileNo']) && isset($_POST['password'])) {
 		
         echo json_encode($response);
 		//}
-    } else {
+    } 
+    else {
         // user is not found with the credentials
         $response["error"] = TRUE;
         $response["error_msg"] = "Please enter valid login credentials.";
         echo json_encode($response);
     }
-} else {
+} 
+else {
     // required post params is missing
     $response["error"] = TRUE;
     $response["error_msg"] = "Required parameters email or password is missing!";
